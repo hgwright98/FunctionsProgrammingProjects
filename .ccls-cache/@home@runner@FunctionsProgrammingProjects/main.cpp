@@ -1,45 +1,65 @@
-// I am grabbing the center point coordinate and any edge point coordinate the user wishes to input. The program will then take those inputs and run them throught the various functions below to output the Radius, Circumference, and the area of the circle based on the inputted points.
+// This program runs three functions in the main function and the first asks the user for 3 prices the price today, 1 year ago, and 2 years ago. After that a second function calculates the inflation rate and the third funciton checks to see if the inflation rate is increasing or decreasing and then outputs the inflation rate and whether it is increasing or decreasing.
 #include <iostream>
-#include <cmath>
+#include <iomanip>
 
 using namespace std;
-// These are where I created the functions that I will be using in the program.
-double calcDistance (double w, double x, double y, double z) 
-{
-  double Distance = sqrt(pow(y-w,2)+pow(z-x,2));
-  return Distance;
+
+// Function to get the prices from the user and checks if the prices are valid with a while statement
+void getPrices(double &x, double &y, double &z) {
+    cout << "Please enter the price of the item today: "; 
+    cin >> x;
+    while (x < 0){
+        cout << "Price cannot be negative. Please enter a valid price: ";
+        cin >> x;
+    }
+    
+    cout << "Please enter the price of the item 1 year ago: "; 
+    cin >> y;
+    while (y < 0) {
+        cout << "Price cannot be negative. Please enter a valid price: ";
+        cin >> y;
+    }
+
+    cout << "Please enter the price of the item 2 years ago: "; 
+    cin >> z;
+    while (z < 0) {
+        cout << "Price cannot be negative. Please enter a valid price: ";
+        cin >> z;
+    }
 }
 
-double calcRadius (double w, double x, double y, double z)
-{
-  double Radius = calcDistance (w,x,y,z);
-  return Radius;
+// This functions calulates the inflation rates and then stores them in the main funciton variables
+void calculateInflationRates(double v, double w, double x, double &y, double &z) {
+    y = (v - w) / w;
+    z = (w - x) / x;
 }
 
-double calcCircumference (double w, double x, double y, double z)
-{
-  double Circumference = calcRadius (w,x,y,z) * 2 * 3.1416;
-  return Circumference;
+// This function checks to see if the inflation rates are increasing or decreasing and then outputs the inflation rates and whether the inflation rates are increasing or decreasing and the rates themselves
+void displayResults(double y, double z) {
+    cout << fixed << setprecision(2);
+    cout << "The inflation rate for the first year is: " << y * 100 << "%" << endl;
+    cout << "The inflation rate for the second year is: " << z * 100 << "%" << endl;
+
+    if (y > z)
+        cout << "The inflation rate is decreasing." << endl;
+    else if (y < z)
+        cout << "The inflation rate is increasing." << endl;
+    else
+        cout << "The inflation rate is constant." << endl;
 }
-double calcArea (double w, double x, double y, double z)
-{
-  double Area = 3.1416 * pow(calcRadius (w,x,y,z), 2);
-  return Area;
-}
-// Here is where I will be calling the main function and calling all the functions I need
-int main() 
-{
-  //I am establishing the varaibles that I will get from the user
-  double x1, x2, y1, y2;
-  //This is where I am grabbing the inputs
-  cout << "Please input the coordinate for the center of your cirle:" << endl;
-  cin >> x1 >> y1;
-  cout << "Please input any coordinate on the edge of your circle:" << endl;
-  cin >> x2 >> y2;
-  //This is where I am calling the functions made above using the variables I took from the user
-  cout << "Based on the points: Center (" << x1 << "," << y1 << ") Edge (" << x2 << "," << y2 << ")" << endl;
-  cout << "The radius is: " << calcRadius (x1, y1, x2, y2) << endl;
-  cout << "The cirumference is: " << calcCircumference (x1, y1, x2, y2) <<endl;
-  cout << "The area is: " << calcArea (x1, y1, x2, y2) << endl;
-  return 0;
+// The main function calls the three functions
+int main() {
+    // This is where the varaibles are initiatliazed so that I can use them in the functions
+    double price1, price2, price3, inflationRate1, inflationRate2;
+
+    // This gets the prices from the user
+    getPrices(price1, price2, price3);
+
+    // This calculates the inflation rates
+    calculateInflationRates(price1, price2, price3, inflationRate1, inflationRate2);
+
+    // This outputs the results
+    displayResults(inflationRate1, inflationRate2);
+
+    return 0;
 }
